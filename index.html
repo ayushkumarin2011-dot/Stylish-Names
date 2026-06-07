@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Gaming Nickname Generator</title>
+    <style>
+        /* प्रीमियम लाइट मोड थीम */
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --primary-color: #007aff; /* आईफोन जैसा प्रीमियम ब्लू */
+            --primary-hover: #0056b3;
+            --border-color: #e2e8f0;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* हैमबर्गर मेनू स्टाइल */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            transition: 0.3s;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 240px;
+            height: 100%;
+            background: var(--card-bg);
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
+            z-index: 99;
+            padding: 80px 20px 20px 20px;
+            transition: 0.3s ease;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 12px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            background: var(--bg-color);
+        }
+
+        /* मेन कंटेनर */
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 80px 15px 40px 15px;
+            background: var(--card-bg);
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        /* इनपुट बॉक्स */
+        input[type="text"] {
+            width: 90%;
+            padding: 14px;
+            font-size: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            outline: none;
+            text-align: center;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 122, 255, 0.1);
+        }
+
+        /* फ़िल्टर बटन्स */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        /* रिजल्ट बॉक्स */
+        .result-box {
+            margin-top: 30px;
+            text-align: left;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .result-box::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .result-box::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .font-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-color);
+            padding: 14px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: 0.2s;
+        }
+
+        .font-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+
+        .font-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            width: 70%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .copy-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+            background-color: var(--primary-hover);
+        }
+    </style>
+</head>
+<body>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+<div class="sidebar" id="sidebar">
+    <h3>Menu Options</h3>
+    <a href="#" class="sidebar-link" onclick="toggleMenu()">✨ Generate Your Name</a>
+    <a href="#" class="sidebar-link" onclick="alert('Gaming Tools Coming Soon!')">🎮 Extra Fonts</a>
+</div>
+
+<div class="main-container">
+    <h1>NICKNAME STYLER</h1>
+    <div class="subtitle">Create Cool & Advanced Gaming Names</div>
+    
+    <input type="text" id="nameInput" placeholder="अपना नाम यहाँ लिखें..." oninput="generateFonts()">
+    
+    <div class="filter-container">
+        <button class="filter-btn active" id="btn-all" onclick="filterStyle('all')">All Styles</button>
+        <button class="filter-btn" id="btn-symbols" onclick="filterStyle('symbols')">With Symbols</button>
+        <button class="filter-btn" id="btn-fonts" onclick="filterStyle('fonts')">Fonts Only</button>
+    </div>
+    
+    <div class="result-box" id="resultBox"></div>
+</div>
+
+<script>
+    let currentFilter = 'all';
+
+    // साइडबार खोलने और बंद करने का फंक्शन
+    function toggleMenu() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    // अक्षरों को बदलने वाले कनवर्टर फंक्शन्स
+    function toSmallCaps(text) {
+        const map = {a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ',A:'ᴀ',B:'ʙ',C:'ᴄ',D:'ᴅ',E:'ᴇ',F:'ꜰ',G:'ɢ',H:'ʜ',I:'ɪ',J:'ᴊ',K:'ᴋ',L:'ʟ',M:'ᴍ',N:'ɴ',O:'ᴏ',P:'ᴘ',Q:'ǫ',R:'ʀ',S:'<b>ꜱ</b>',T:'ᴛ',U:'ᴜ',V:'ᴠ',W:'ᴡ',X:'x',Y:'ʏ',Z:'<b>ᴢ</b>'};
+        return text.split('').map(c => map[c] || c).join('');
+    }
+
+    function toBubble(text) {
+        const map = {a:'ⓐ',b:'ⓑ',c:'ⓒ',d:'ⓓ',e:'ⓔ',f:'ⓕ',g:'ⓖ',h:'ⓗ',i:'ⓘ',j:'ⓙ',k:'ⓚ',l:'ⓛ',m:'ⓜ',n:'ⓝ',o:'ⓞ',p:'ⓟ',q:'ⓠ',r:'ⓡ',s:'ⓢ',t:'ⓣ',u:'ⓤ',v:'ⓥ',w:'ⓦ',x:'ⓧ',y:'ⓨ',z:'ⓩ',A:'Ⓐ',B:'Ⓑ',C:'Ⓒ',D:'Ⓓ',E:'Ⓔ',F:'Ⓕ',G:' mosque',H:'Ⓗ',I:'Ⓘ',J:'Ⓙ',K:'Ⓚ',L:'Ⓛ',M:'踩',N:'Ⓝ',O:'Ⓞ',P:'Ⓟ',Q:'Ⓠ',R:'Ⓡ',S:'Ⓢ',T:'Ⓣ',U:'Ⓤ',V:'Ⓥ',W:'Ⓦ',X:'Ⓧ',Y:'Ⓨ',Z:'Ⓩ'};
+        return text.split('').map(c => map[c] || c).join('');
+    }
+
+    function toSquare(text) {
+        const map = {a:'🄰',b:'🄱',c:'🄲',d:'🄳',e:'🄴',f:'🄵',g:'🄶',h:'🄷',i:'🄸',j:'🄹',k:'🄺',l:'🄻',m:'🄼',n:'🄽',o:'🄾',p:'🄿',q:'🄵',r:'🅁',s:'🅂',t:'🅃',u:'🅄',v:'🅅',w:'🅆',x:'🅇',y:'🅈',z:'🅉',A:'🄰',B:'🄱',C:'🄲',D:'🄳',E:'🄴',F:'🄵',G:'🄶',H:'🄷',I:'🄸',J:'🄹',K:'🄺',L:'🄻',M:'🄼',N:'🄽',O:'🄾',P:'🄿',Q:'🄵',R:'🅁',S:'🅂',T:'🅃',U:'🅄',V:'🅅',W:'🅆',X:'🅇',Y:'🅈',Z:'🅉'};
+        return text.split('').map(c => map[c] || c).join('');
+    }
+
+    // फ़िल्टर बटन बदलने का फंक्शन
+    function filterStyle(type) {
+        currentFilter = type;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${type}`).classList.add('active');
+        generateFonts();
+    }
+
+    // मेन फॉन्ट जनरेटर लॉजिक
+    function generateFonts() {
+        const input = document.getElementById('nameInput').value;
+        const resultBox = document.getElementById('resultBox');
+        
+        if (input.trim() === "") {
+            resultBox.innerHTML = "";
+            return;
+        }
+
+        const smallCaps = toSmallCaps(input);
+        const bubble = toBubble(input);
+        const square = toSquare(input);
+        const upper = input.toUpperCase();
+
+        // सिर्फ फॉन्ट वाले डिज़ाइन्स
+        const pureFonts = [
+            smallCaps, bubble, square, upper, input.toLowerCase()
+        ];
+
+        // सिम्बल्स वाले खतरनाक डिज़ाइन्स
+        const symbolStyles = [
+            `々${upper}々`, `꧁${input}꧂`, `• ${smallCaps} •`, `☠️ ${upper} ☠️`,
+            `⚡ ${input} ⚡`, `⚔️ ${upper} ⚔️`, `♛ ${smallCaps} ♛`, `★彡 ${input} 彡★`,
+            `◥ ${upper} ◤`, `『 ${smallCaps} 』`, `亗 ${upper} 亗`, `〆${upper}〆`,
+            `ツ ${input} 𓆪`, `王 ${input} 王`, `⦃ ${smallCaps} ⦄`, `🍷 ${upper} 🍷`,
+            `× ${smallCaps} ×`, `乡 ${upper} 乡`, `• K I N G • ${smallCaps}`, `• Q U E E N • ${smallCaps}`,
+            `OP • ${smallCaps} 亗`, `★ ${bubble} ★`, `🔥 ${upper} 🔥`, `╰‿╯ ${input}`
+        ];
+
+        // फ़िल्टर के हिसाब से लिस्ट चुनना
+        let finalStyles = [];
+        if (currentFilter === 'all') {
+            finalStyles = [...symbolStyles, ...pureFonts];
+        } else if (currentFilter === 'symbols') {
+            finalStyles = symbolStyles;
+        } else if (currentFilter === 'fonts') {
+            finalStyles = pureFonts;
+        }
+
+        let htmlContent = "";
+        finalStyles.forEach((styledName, index) => {
+            htmlContent += `
+                <div class="font-row">
+                    <span class="font-text" id="text-${index}">${styledName}</span>
+                    <button class="copy-btn" onclick="copyText('text-${index}')">COPY</button>
+                </div>
+            `;
+        });
+        
+        resultBox.innerHTML = htmlContent;
+    }
+
+    // पक्का कॉपी कोड जो सफारी ब्राउज़र में 100% काम करेगा
+    function copyText(elementId) {
+        const textToCopy = document.getElementById(elementId).innerText;
+        
+        const tempInput = document.createElement("input");
+        tempInput.value = textToCopy;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        
+        alert("कॉपी हो गया: " + textToCopy);
+    }
+</script>
+
+</body>
+</html>
